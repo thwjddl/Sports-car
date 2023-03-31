@@ -44,12 +44,17 @@ if (WEBGL.isWebGLAvailable()) {
   document.body.appendChild(renderer.domElement);
 
   // 도형 추가
-
-
-  const car = new GLTFLoader();
-  car.load('../../model/scene.gltf', function (gltf) {
+  const loader = new GLTFLoader();
+  loader.load('../../model/scene.gltf', function (gltf) {
     scene.add(gltf.scene);
     renderer.render(scene, camera);
+
+    function animate() {
+      requestAnimationFrame(animate);
+      gltf.scene.rotation.y += 0.005;
+      renderer.render(scene, camera);
+    }
+    animate();
   });
 
 
@@ -103,7 +108,6 @@ if (WEBGL.isWebGLAvailable()) {
   // 마우스 움직임
   function animate() {
     requestAnimationFrame(animate);
-    // car.rotation.y += 0.02;
     controls.update();
     renderer.render(scene, camera);
   }
