@@ -27,7 +27,7 @@ if (WEBGL.isWebGLAvailable()) {
   scene.add(ambientLight);
 
   const rectLight = new THREE.RectAreaLight(0xffffff, 5, 5, 1.5);
-  rectLight.position.set(0, 2, 1);
+  rectLight.position.set(1, 2, 1);
   rectLight.lookAt(0, 0, 0);
   scene.add(rectLight);
 
@@ -44,6 +44,8 @@ if (WEBGL.isWebGLAvailable()) {
   document.body.appendChild(renderer.domElement);
 
   // 도형 추가
+
+
   const car = new GLTFLoader();
   car.load('../../model/scene.gltf', function (gltf) {
     scene.add(gltf.scene);
@@ -51,8 +53,52 @@ if (WEBGL.isWebGLAvailable()) {
   });
 
 
+  const skyMaterualArray = []
+  const texture_ft = new THREE.TextureLoader().load('../static/ex-12/bay_ft.jpg');
+  const texture_bk = new THREE.TextureLoader().load('../static/ex-12/bay_bk.jpg');
+  const texture_up = new THREE.TextureLoader().load('../static/ex-12/bay_up.jpg');
+  const texture_dn = new THREE.TextureLoader().load('../static/ex-12/bay_dn.jpg');
+  const texture_rt = new THREE.TextureLoader().load('../static/ex-12/bay_rt.jpg');
+  const texture_lf = new THREE.TextureLoader().load('../static/ex-12/bay_lf.jpg');
+  skyMaterualArray.push(
+    new THREE.MeshStandardMaterial({
+      map: texture_ft,
+    })
+  )
+  skyMaterualArray.push(
+    new THREE.MeshStandardMaterial({
+      map: texture_bk,
+    })
+  )
+  skyMaterualArray.push(
+    new THREE.MeshStandardMaterial({
+      map: texture_up,
+    })
+  )
+  skyMaterualArray.push(
+    new THREE.MeshStandardMaterial({
+      map: texture_dn,
+    })
+  )
+  skyMaterualArray.push(
+    new THREE.MeshStandardMaterial({
+      map: texture_rt,
+    })
+  )
+  skyMaterualArray.push(
+    new THREE.MeshStandardMaterial({
+      map: texture_lf,
+    })
+  )
 
+  // 반복문
+  for (let i = 0; i < 6; i++) {
+    skyMaterualArray[i].side = THREE.BackSide
+  }
 
+  const skyGeometry = new THREE.BoxGeometry(500, 500, 500);
+  const sky = new THREE.Mesh(skyGeometry, skyMaterualArray);
+  scene.add(sky);
 
   // 마우스 움직임
   function animate() {
@@ -60,8 +106,6 @@ if (WEBGL.isWebGLAvailable()) {
     // car.rotation.y += 0.02;
     controls.update();
     renderer.render(scene, camera);
-
-
   }
   animate();
 
